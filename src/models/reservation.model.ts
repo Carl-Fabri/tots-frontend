@@ -31,3 +31,4 @@ export interface UpdateReservationRequest {
   status?: 'pending' | 'confirmed' | 'cancelled';
 }
 
+

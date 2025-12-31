@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SpacesResponse, SpaceResponse, Space } from '../models/space.model';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpaceService {
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -35,4 +36,5 @@ export class SpaceService {
     return this.http.delete(`${this.apiUrl}/spaces/${id}`);
   }
 }
+
 

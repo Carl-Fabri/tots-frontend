@@ -68,6 +68,17 @@ Asegúrate de configurar las siguientes variables en el backend:
 
 El CORS está configurado en `tots-backend/config/cors.php` para permitir solicitudes desde `http://localhost:4200`.
 
+### Configuración de Environment
+
+El proyecto utiliza archivos de environment para configurar la URL del backend:
+
+- **Desarrollo**: `src/environments/environment.ts` (por defecto usa `http://localhost:8000/api`)
+- **Producción**: `src/environments/environment.prod.ts` (actualiza con tu dominio de producción)
+
+Para cambiar la URL del backend, edita el archivo correspondiente y modifica el valor de `apiUrl`.
+
+**Nota**: Al construir para producción, Angular automáticamente usará `environment.prod.ts`.
+
 ## Estructura del Proyecto
 
 ### Frontend

@@ -206,4 +206,3 @@ export class CalendarViewComponent implements OnInit {
     return day.reservations.length;
   }
 }
-

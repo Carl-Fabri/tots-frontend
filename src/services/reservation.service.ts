@@ -7,12 +7,13 @@ import {
   CreateReservationRequest,
   UpdateReservationRequest
 } from '../models/reservation.model';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -64,4 +65,5 @@ export class ReservationService {
     return this.http.delete(`${this.apiUrl}/reservations/${id}`);
   }
 }
+
 
