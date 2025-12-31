@@ -4,15 +4,15 @@ Sistema completo de gestión de espacios y reservas construido con Angular y Lar
 
 ## Características
 
-- ✅ Autenticación con MC-Kit Auth
-- ✅ Vista principal con listado de espacios y filtros avanzados
-- ✅ **Calendario visual de reservas** - Muestra horarios reservados y libres
-- ✅ Detalle de espacios con información completa y calendario específico
-- ✅ ABM de espacios para administradores (usando PrimeNG Table)
-- ✅ Sistema de reservas con validación de horarios
-- ✅ Gestión de reservas (ver, editar, cancelar)
-- ✅ Sistema de notificaciones (toasts) con PrimeNG
-- ✅ Interfaz moderna con PrimeNG y Tailwind CSS
+- Autenticación con MC-Kit Auth
+- Vista principal con listado de espacios y filtros avanzados
+- **Calendario visual de reservas** - Muestra horarios reservados y libres
+- Detalle de espacios con información completa y calendario específico
+- ABM de espacios para administradores (usando PrimeNG Table)
+- Sistema de reservas con validación de horarios
+- Gestión de reservas (ver, editar, cancelar)
+- Sistema de notificaciones (toasts) con PrimeNG
+- Interfaz moderna con PrimeNG y Tailwind CSS
 
 ## Tecnologías Utilizadas
 
