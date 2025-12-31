@@ -1,0 +1,122 @@
+<div class="reservations-list-container">
+  <div class="header-section">
+    <h2>Mis Reservas</h2>
+    <div class="filter-group">
+      <label>Filtrar por estado:</label>
+      <select [(ngModel)]="statusFilter" (ngModelChange)="onStatusFilterChange()" class="filter-select">
+        <option value="">Todos</option>
+        <option value="confirmed">Confirmadas</option>
+        <option value="pending">Pendientes</option>
+        <option value="cancelled">Canceladas</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Cargando reservas...</p>
+  </div>
+
+  <div *ngIf="!loading && filteredReservations.length === 0" class="no-results">
+    <p>No tienes reservas</p>
+    <button routerLink="/" class="btn-primary">Explorar espacios</button>
+  </div>
+
+  <div *ngIf="!loading && filteredReservations.length > 0" class="reservations-grid">
+    <div *ngFor="let reservation of filteredReservations" class="reservation-card">
+      <div class="reservation-header">
+        <h3>{{ reservation.title }}</h3>
+        <span class="status-badge" [ngClass]="getStatusClass(reservation.status)">
+          {{ getStatusLabel(reservation.status) }}
+        </span>
+      </div>
+
+      <div class="reservation-details">
+        <div class="detail-item">
+          <strong>Espacio:</strong> {{ reservation.space?.name || 'N/A' }}
+        </div>
+        <div class="detail-item">
+          <strong>Inicio:</strong> {{ reservation.start_time | date:'short' }}
+        </div>
+        <div class="detail-item">
+          <strong>Fin:</strong> {{ reservation.end_time | date:'short' }}
+        </div>
+        <div class="detail-item" *ngIf="reservation.description">
+          <strong>Descripción:</strong> {{ reservation.description }}
+        </div>
+      </div>
+
+      <div class="reservation-actions">
+        <button (click)="editReservation(reservation)" class="btn-edit">Editar</button>
+        <button 
+          *ngIf="reservation.status !== 'cancelled'" 
+          (click)="cancelReservation(reservation)" 
+          class="btn-cancel"
+        >
+          Cancelar
+        </button>
+        <button (click)="deleteReservation(reservation)" class="btn-delete">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showEditDialog && editingReservation" class="dialog-overlay" (click)="cancelEdit()">
+    <div class="dialog-content" (click)="$event.stopPropagation()">
+      <h3>Editar Reserva</h3>
+      
+      <div class="form-group">
+        <label>Nombre del evento</label>
+        <input
+          type="text"
+          [(ngModel)]="editingReservation.title"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea
+          [(ngModel)]="editingReservation.description"
+          class="form-control"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Fecha y hora de inicio</label>
+          <input
+            type="datetime-local"
+            [value]="formatDateTimeForInput(editingReservation.start_time)"
+            (input)="editingReservation.start_time = $any($event.target).value"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Fecha y hora de fin</label>
+          <input
+            type="datetime-local"
+            [value]="formatDateTimeForInput(editingReservation.end_time)"
+            (input)="editingReservation.end_time = $any($event.target).value"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Estado</label>
+        <select [(ngModel)]="editingReservation.status" class="form-control">
+          <option value="pending">Pendiente</option>
+          <option value="confirmed">Confirmada</option>
+          <option value="cancelled">Cancelada</option>
+        </select>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" (click)="cancelEdit()" class="btn-cancel">Cancelar</button>
+        <button type="button" (click)="saveReservation()" class="btn-save">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

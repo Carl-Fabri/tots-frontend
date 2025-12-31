@@ -1,0 +1,335 @@
+.calendar-view-container {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .btn-nav {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 8px;
+        font-size: 24px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #667eea;
+
+        &:hover {
+          background: #f5f5f5;
+          border-color: #667eea;
+        }
+      }
+
+      h2 {
+        margin: 0;
+        color: #333;
+        font-size: 24px;
+        min-width: 200px;
+        text-align: center;
+      }
+
+      .btn-today {
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: opacity 0.3s;
+
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+    }
+
+    .space-filter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      label {
+        color: #333;
+        font-weight: 500;
+      }
+
+      .filter-select {
+        padding: 8px 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+
+        &:focus {
+          outline: none;
+          border-color: #667eea;
+        }
+      }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+  }
+
+  .auth-message {
+    text-align: center;
+    padding: 12px;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 6px;
+    color: #856404;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .calendar-wrapper {
+    overflow-x: auto;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 700px;
+
+    .week-day-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .calendar-day {
+      background: white;
+      min-height: 100px;
+      padding: 8px;
+      position: relative;
+      transition: background-color 0.2s;
+      cursor: pointer;
+
+      &:hover {
+        background: #f9f9f9;
+      }
+
+      &.other-month {
+        background: #f5f5f5;
+        opacity: 0.6;
+      }
+
+      &.today {
+        background: #e3f2fd;
+        border: 2px solid #2196f3;
+      }
+
+      &.has-reservations {
+        background: #fff9e6;
+      }
+
+      .day-number {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 4px;
+        font-size: 14px;
+      }
+
+      .reservations-indicator {
+        position: relative;
+        margin-bottom: 4px;
+
+        .reservation-count {
+          display: inline-block;
+          background: #667eea;
+          color: white;
+          border-radius: 12px;
+          padding: 2px 8px;
+          font-size: 11px;
+          font-weight: 600;
+        }
+
+        .reservations-tooltip {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          z-index: 1000;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s;
+          margin-top: 4px;
+        }
+
+        &:hover .reservations-tooltip {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .tooltip-content {
+          background: white;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+          padding: 12px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          min-width: 250px;
+          max-width: 300px;
+
+          strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 12px;
+          }
+
+          .reservation-item-tooltip {
+            padding: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 4px;
+
+            &:last-child {
+              border-bottom: none;
+              margin-bottom: 0;
+            }
+
+            .reservation-title {
+              font-weight: 600;
+              color: #333;
+              font-size: 13px;
+              margin-bottom: 4px;
+            }
+
+            .reservation-time {
+              color: #666;
+              font-size: 11px;
+              margin-bottom: 2px;
+            }
+
+            .reservation-space {
+              color: #999;
+              font-size: 10px;
+            }
+          }
+        }
+      }
+
+      .reservation-dots {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 4px;
+
+        .reservation-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          display: inline-block;
+
+          &.status-confirmed {
+            background: #4caf50;
+          }
+
+          &.status-pending {
+            background: #ff9800;
+          }
+
+          &.status-cancelled {
+            background: #f44336;
+          }
+        }
+
+        .more-reservations {
+          font-size: 10px;
+          color: #666;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #666;
+
+      .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+
+        &.status-confirmed {
+          background: #4caf50;
+        }
+
+        &.status-pending {
+          background: #ff9800;
+        }
+
+        &.status-cancelled {
+          background: #f44336;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-view-container {
+    padding: 16px;
+
+    .calendar-header {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .header-controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
+    .calendar-grid {
+      min-width: 100%;
+
+      .calendar-day {
+        min-height: 80px;
+        padding: 6px;
+      }
+    }
+  }
+}
+

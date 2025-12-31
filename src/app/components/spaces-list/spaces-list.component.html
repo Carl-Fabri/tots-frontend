@@ -1,0 +1,89 @@
+<div class="spaces-list-container">
+  <div class="header-section">
+    <h2>Espacios Disponibles</h2>
+    <p>Encuentra y reserva el espacio perfecto para tu evento</p>
+  </div>
+
+  <!-- Calendario de Reservas -->
+  <app-calendar-view></app-calendar-view>
+
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Buscar</label>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        placeholder="Buscar por nombre o descripción..."
+        class="filter-input"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>Capacidad mínima</label>
+      <input
+        type="number"
+        [(ngModel)]="minCapacity"
+        (ngModelChange)="onCapacityFilterChange()"
+        placeholder="Mínimo"
+        class="filter-input"
+        min="1"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>Capacidad máxima</label>
+      <input
+        type="number"
+        [(ngModel)]="maxCapacity"
+        (ngModelChange)="onCapacityFilterChange()"
+        placeholder="Máximo"
+        class="filter-input"
+        min="1"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>
+        <input
+          type="checkbox"
+          [(ngModel)]="onlyActive"
+          (ngModelChange)="onActiveFilterChange()"
+        />
+        Solo espacios activos
+      </label>
+    </div>
+
+    <button (click)="clearFilters()" class="btn-clear">Limpiar filtros</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Cargando espacios...</p>
+  </div>
+
+  <div *ngIf="!loading && filteredSpaces.length === 0" class="no-results">
+    <p>No se encontraron espacios con los filtros seleccionados</p>
+  </div>
+
+  <div class="spaces-grid" *ngIf="!loading && filteredSpaces.length > 0">
+    <div *ngFor="let space of filteredSpaces" class="space-card" (click)="viewSpaceDetails(space.id)">
+      <div class="space-header">
+        <h3>{{ space.name }}</h3>
+        <span class="badge" [class.active]="space.is_active" [class.inactive]="!space.is_active">
+          {{ space.is_active ? 'Disponible' : 'No disponible' }}
+        </span>
+      </div>
+      <p class="space-description">{{ space.description || 'Sin descripción' }}</p>
+      <div class="space-details">
+        <div class="detail-item">
+          <strong>Capacidad:</strong> {{ space.capacity }} personas
+        </div>
+        <div class="detail-item" *ngIf="space.location">
+          <strong>Ubicación:</strong> {{ space.location }}
+        </div>
+      </div>
+      <button class="btn-view-details">Ver detalles</button>
+    </div>
+  </div>
+</div>
+

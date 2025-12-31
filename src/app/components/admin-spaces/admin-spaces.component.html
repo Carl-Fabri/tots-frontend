@@ -1,0 +1,114 @@
+<div class="admin-spaces-container">
+  <div class="header-section">
+    <h2>Administrar Espacios</h2>
+    <button (click)="openDialog()" class="btn-add">+ Nuevo Espacio</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Cargando espacios...</p>
+  </div>
+
+  <div *ngIf="!loading" class="table-container">
+    <p-table [value]="spaces" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" styleClass="p-datatable-striped">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Capacidad</th>
+          <th>Ubicación</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-space>
+        <tr>
+          <td>{{ space.id }}</td>
+          <td>{{ space.name }}</td>
+          <td>{{ space.description || '-' }}</td>
+          <td>{{ space.capacity }}</td>
+          <td>{{ space.location || '-' }}</td>
+          <td>
+            <span class="badge" [class.active]="space.is_active" [class.inactive]="!space.is_active">
+              {{ space.is_active ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button (click)="openDialog(space)" class="btn-edit">Editar</button>
+              <button (click)="deleteSpace(space)" class="btn-delete">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div *ngIf="showDialog" class="dialog-overlay" (click)="closeDialog()">
+    <div class="dialog-content" (click)="$event.stopPropagation()">
+      <h3>{{ editingSpace ? 'Editar Espacio' : 'Nuevo Espacio' }}</h3>
+      
+      <form (ngSubmit)="saveSpace()">
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input
+            type="text"
+            [(ngModel)]="spaceForm.name"
+            name="name"
+            required
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea
+            [(ngModel)]="spaceForm.description"
+            name="description"
+            class="form-control"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Capacidad *</label>
+          <input
+            type="number"
+            [(ngModel)]="spaceForm.capacity"
+            name="capacity"
+            required
+            min="1"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Ubicación</label>
+          <input
+            type="text"
+            [(ngModel)]="spaceForm.location"
+            name="location"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="spaceForm.is_active"
+              name="is_active"
+            />
+            Activo
+          </label>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" (click)="closeDialog()" class="btn-cancel">Cancelar</button>
+          <button type="submit" class="btn-save">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

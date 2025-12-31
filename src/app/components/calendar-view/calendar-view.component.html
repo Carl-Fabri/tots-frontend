@@ -1,0 +1,85 @@
+<div class="calendar-view-container">
+  <div class="calendar-header">
+    <div class="header-controls">
+      <button (click)="previousMonth()" class="btn-nav">‹</button>
+      <h2>{{ getCurrentMonthYear() }}</h2>
+      <button (click)="nextMonth()" class="btn-nav">›</button>
+      <button (click)="goToToday()" class="btn-today">Hoy</button>
+    </div>
+    
+    <div class="space-filter" *ngIf="!spaceId && authService.isAuthenticated()">
+      <label>Filtrar por espacio:</label>
+      <select [(ngModel)]="selectedSpaceId" (ngModelChange)="onSpaceChange()" class="filter-select">
+        <option [value]="null">Todos los espacios</option>
+        <option *ngFor="let space of spaces" [value]="space.id">{{ space.name }}</option>
+      </select>
+    </div>
+    <div *ngIf="!authService.isAuthenticated()" class="auth-message">
+      <p>Inicia sesión para ver las reservas en el calendario</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Cargando calendario...</p>
+  </div>
+
+  <div *ngIf="!loading || !authService.isAuthenticated()" class="calendar-wrapper">
+    <div class="calendar-grid">
+      <!-- Días de la semana -->
+      <div class="week-day-header" *ngFor="let day of weekDays">
+        {{ day }}
+      </div>
+
+      <!-- Días del calendario -->
+      <div 
+        *ngFor="let day of calendarDays" 
+        class="calendar-day"
+        [class.other-month]="!day.isCurrentMonth"
+        [class.today]="day.isToday"
+        [class.has-reservations]="hasReservations(day)"
+      >
+        <div class="day-number">{{ day.date.getDate() }}</div>
+        <div class="reservations-indicator" *ngIf="hasReservations(day)">
+          <span class="reservation-count">{{ getReservationCount(day) }}</span>
+          <div class="reservations-tooltip">
+            <div class="tooltip-content">
+              <strong>Reservas del día:</strong>
+              <div *ngFor="let reservation of day.reservations" class="reservation-item-tooltip">
+                <div class="reservation-title">{{ reservation.title }}</div>
+                <div class="reservation-time">{{ getReservationTime(reservation) }}</div>
+                <div class="reservation-space" *ngIf="reservation.space">
+                  Espacio: {{ reservation.space.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reservation-dots">
+          <span 
+            *ngFor="let reservation of day.reservations.slice(0, 3)" 
+            class="reservation-dot"
+            [class]="'status-' + reservation.status"
+            [title]="reservation.title + ' - ' + getReservationTime(reservation)"
+          ></span>
+          <span *ngIf="day.reservations.length > 3" class="more-reservations">+{{ day.reservations.length - 3 }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-legend">
+    <div class="legend-item">
+      <span class="legend-dot status-confirmed"></span>
+      <span>Confirmada</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot status-pending"></span>
+      <span>Pendiente</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot status-cancelled"></span>
+      <span>Cancelada</span>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,21 @@
+<div class="layout-container">
+  <header class="header">
+    <div class="header-content">
+      <h1 class="logo" routerLink="/">Sistema de Reservas</h1>
+      <nav class="nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Espacios</a>
+        <a routerLink="/reservations" routerLinkActive="active" *ngIf="authService.isAuthenticated()">Mis Reservas</a>
+        <a routerLink="/admin/spaces" routerLinkActive="active" *ngIf="currentUser?.role === 'admin'">Administrar Espacios</a>
+      </nav>
+      <div class="user-section">
+        <span *ngIf="currentUser" class="user-name">{{ currentUser.name }}</span>
+        <button *ngIf="authService.isAuthenticated()" (click)="logout()" class="btn-logout">Cerrar sesión</button>
+        <a *ngIf="!authService.isAuthenticated()" routerLink="/login" class="btn-login">Iniciar sesión</a>
+      </div>
+    </div>
+  </header>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+

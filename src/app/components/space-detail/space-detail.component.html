@@ -1,0 +1,73 @@
+<div class="space-detail-container">
+  <button (click)="router.navigate(['/'])" class="btn-back">← Volver</button>
+
+  <div *ngIf="loading" class="loading">
+    <p>Cargando información del espacio...</p>
+  </div>
+
+  <div *ngIf="!loading && space" class="space-detail">
+    <div class="space-header">
+      <div>
+        <h1>{{ space.name }}</h1>
+        <span class="badge" [class.active]="space.is_active" [class.inactive]="!space.is_active">
+          {{ space.is_active ? 'Disponible' : 'No disponible' }}
+        </span>
+      </div>
+      <button 
+        *ngIf="authService.isAuthenticated() && space.is_active" 
+        (click)="reserveSpace()" 
+        class="btn-reserve"
+      >
+        Reservar espacio
+      </button>
+    </div>
+
+    <div class="space-content">
+      <div class="space-info">
+        <div class="info-section">
+          <h3>Descripción</h3>
+          <p>{{ space.description || 'Sin descripción disponible' }}</p>
+        </div>
+
+        <div class="info-section">
+          <h3>Detalles</h3>
+          <div class="details-grid">
+            <div class="detail-item">
+              <strong>Capacidad:</strong> {{ space.capacity }} personas
+            </div>
+            <div class="detail-item" *ngIf="space.location">
+              <strong>Ubicación:</strong> {{ space.location }}
+            </div>
+            <div class="detail-item">
+              <strong>Estado:</strong> {{ space.is_active ? 'Activo' : 'Inactivo' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section" *ngIf="reservations.length > 0">
+          <h3>Próximas reservas</h3>
+          <div class="reservations-list">
+            <div *ngFor="let reservation of reservations" class="reservation-item">
+              <div>
+                <strong>{{ reservation.title }}</strong>
+                <p class="reservation-time">
+                  {{ reservation.start_time | date:'short' }} - {{ reservation.end_time | date:'short' }}
+                </p>
+              </div>
+              <span class="status-badge" [class]="'status-' + reservation.status">
+                {{ reservation.status }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendario de Reservas del Espacio -->
+        <div class="info-section" *ngIf="authService.isAuthenticated()">
+          <h3>Calendario de Disponibilidad</h3>
+          <app-calendar-view [spaceId]="spaceId"></app-calendar-view>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,81 @@
+<div class="reservation-form-container">
+  <button (click)="router.navigate(['/spaces', spaceId])" class="btn-back">← Volver</button>
+
+  <div *ngIf="loading" class="loading">
+    <p>Cargando información...</p>
+  </div>
+
+  <div *ngIf="!loading && space" class="reservation-form">
+    <h2>Reservar: {{ space.name }}</h2>
+
+    <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="title">Nombre del evento *</label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          class="form-control"
+          placeholder="Ej: Reunión de equipo"
+          [class.invalid]="reservationForm.get('title')?.invalid && reservationForm.get('title')?.touched"
+        />
+        <small class="error" *ngIf="reservationForm.get('title')?.invalid && reservationForm.get('title')?.touched">
+          El nombre del evento es requerido (mínimo 3 caracteres)
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descripción</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="form-control"
+          rows="3"
+          placeholder="Descripción opcional del evento"
+        ></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="start_time">Fecha y hora de inicio *</label>
+          <input
+            id="start_time"
+            type="datetime-local"
+            formControlName="start_time"
+            class="form-control"
+            [class.invalid]="reservationForm.get('start_time')?.invalid && reservationForm.get('start_time')?.touched"
+          />
+          <small class="error" *ngIf="reservationForm.get('start_time')?.hasError('pastDate')">
+            La fecha de inicio no puede ser en el pasado
+          </small>
+          <small class="error" *ngIf="reservationForm.get('start_time')?.invalid && reservationForm.get('start_time')?.touched && !reservationForm.get('start_time')?.hasError('pastDate')">
+            La fecha de inicio es requerida
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="end_time">Fecha y hora de fin *</label>
+          <input
+            id="end_time"
+            type="datetime-local"
+            formControlName="end_time"
+            class="form-control"
+            [class.invalid]="reservationForm.get('end_time')?.invalid && reservationForm.get('end_time')?.touched"
+          />
+          <small class="error" *ngIf="reservationForm.get('end_time')?.hasError('invalidTime')">
+            La fecha de fin debe ser posterior a la fecha de inicio
+          </small>
+          <small class="error" *ngIf="reservationForm.get('end_time')?.invalid && reservationForm.get('end_time')?.touched && !reservationForm.get('end_time')?.hasError('invalidTime')">
+            La fecha de fin es requerida
+          </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="router.navigate(['/spaces', spaceId])" class="btn-cancel">Cancelar</button>
+        <button type="submit" [disabled]="reservationForm.invalid" class="btn-submit">Crear Reserva</button>
+      </div>
+    </form>
+  </div>
+</div>
+
