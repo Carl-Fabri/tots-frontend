@@ -48,7 +48,7 @@ export class SpacesListComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        this.notificationService.showError('Error', 'No se pudieron cargar los espacios');
+        this.notificationService.showError('Error al cargar espacios', 'No se pudieron cargar los espacios. Por favor, verifica tu sesión e intenta nuevamente.');
         this.loading = false;
       }
     });

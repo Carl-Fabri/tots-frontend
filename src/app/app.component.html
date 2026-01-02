@@ -1,9 +1,9 @@
 <router-outlet />
 <p-toast 
   position="top-right" 
-  [style]="{ marginTop: '80px' }"
+  [style]="{ marginTop: '20px', marginRight: '20px' }"
   [showTransformOptions]="'translateX(100%)'"
   [hideTransformOptions]="'translateX(100%)'"
-  [showTransitionOptions]="'400ms ease-out'"
-  [hideTransitionOptions]="'300ms ease-in'">
+  [showTransitionOptions]="'500ms cubic-bezier(0.16, 1, 0.3, 1)'"
+  [hideTransitionOptions]="'400ms cubic-bezier(0.5, 0, 0.75, 0)'">
 </p-toast>
