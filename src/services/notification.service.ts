@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MessageService, Message } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class NotificationService {
       life,
       closable: true,
       sticky: false
-    } as Message);
+    });
   }
 
   showError(summary: string, detail: string = '', life: number = 6000): void {
@@ -26,7 +26,7 @@ export class NotificationService {
       life,
       closable: true,
       sticky: false
-    } as Message);
+    });
   }
 
   showInfo(summary: string, detail: string = '', life: number = 4000): void {
@@ -37,7 +37,7 @@ export class NotificationService {
       life,
       closable: true,
       sticky: false
-    } as Message);
+    });
   }
 
   showWarning(summary: string, detail: string = '', life: number = 5000): void {
@@ -48,7 +48,7 @@ export class NotificationService {
       life,
       closable: true,
       sticky: false
-    } as Message);
+    });
   }
 
   /**
@@ -61,7 +61,7 @@ export class NotificationService {
       detail,
       sticky: true,
       closable: true
-    } as Message);
+    });
   }
 
   /**
