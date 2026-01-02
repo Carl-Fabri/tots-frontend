@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { MessageService, Message } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
@@ -7,40 +7,68 @@ import { MessageService } from 'primeng/api';
 export class NotificationService {
   constructor(private messageService: MessageService) { }
 
-  showSuccess(summary: string, detail: string = ''): void {
+  showSuccess(summary: string, detail: string = '', life: number = 4000): void {
     this.messageService.add({
       severity: 'success',
       summary,
       detail,
-      life: 3000
-    });
+      life,
+      closable: true,
+      sticky: false
+    } as Message);
   }
 
-  showError(summary: string, detail: string = ''): void {
+  showError(summary: string, detail: string = '', life: number = 6000): void {
     this.messageService.add({
       severity: 'error',
       summary,
       detail,
-      life: 5000
-    });
+      life,
+      closable: true,
+      sticky: false
+    } as Message);
   }
 
-  showInfo(summary: string, detail: string = ''): void {
+  showInfo(summary: string, detail: string = '', life: number = 4000): void {
     this.messageService.add({
       severity: 'info',
       summary,
       detail,
-      life: 3000
-    });
+      life,
+      closable: true,
+      sticky: false
+    } as Message);
   }
 
-  showWarning(summary: string, detail: string = ''): void {
+  showWarning(summary: string, detail: string = '', life: number = 5000): void {
     this.messageService.add({
       severity: 'warn',
       summary,
       detail,
-      life: 4000
-    });
+      life,
+      closable: true,
+      sticky: false
+    } as Message);
+  }
+
+  /**
+   * Muestra una notificación persistente que requiere acción del usuario
+   */
+  showSticky(severity: 'success' | 'error' | 'info' | 'warn', summary: string, detail: string = ''): void {
+    this.messageService.add({
+      severity,
+      summary,
+      detail,
+      sticky: true,
+      closable: true
+    } as Message);
+  }
+
+  /**
+   * Limpia todas las notificaciones
+   */
+  clear(): void {
+    this.messageService.clear();
   }
 }
 

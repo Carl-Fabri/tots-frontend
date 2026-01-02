@@ -47,7 +47,7 @@ export class AdminSpacesComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        this.notificationService.showError('Error', 'No se pudieron cargar los espacios');
+        this.notificationService.showError('Alerta', 'Porfavor, inicia sesión');
         this.loading = false;
       }
     });
